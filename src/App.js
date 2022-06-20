@@ -1,11 +1,10 @@
 import './App.css';
-import Login from './pages/login.js'; 
+import Login from './pages/login'; 
 import Register from './pages/register';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
-import Accueil from './pages/accueil';
 import PrivateRoute from './component/privateroute';
-import Nav from './pages/navbar';
-import Message from './pages/message';
+import ChatBody from './Chat/chatBody/ChatBody';
+
 
 function App() {
   return (
@@ -14,12 +13,10 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={
-            <PrivateRoute>
-              <Accueil /> 
-            </PrivateRoute>
+              <Login /> 
                   
             } />
-          <Route path="/login" element={<Login />} />
+          <Route path="/Chat" element={<ChatBody />} />
           <Route path="/register" element={<Register />} />
         </Routes>
       </BrowserRouter>

@@ -50,7 +50,7 @@ export default function Login() {
               } catch (e) {
                 console.error("Error adding document: ", e);
               }
-            navigate("/");
+            navigate("/Chat");
             // ...
         })
         .catch((error) => {
