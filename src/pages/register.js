@@ -39,7 +39,7 @@ export default function Register() {
             .then((userCredential) => {
                 // Signed in 
                 const user = userCredential.user;
-                navigate("/accueil");
+                navigate("/");
                 // ...
                 console.log(user);
             })

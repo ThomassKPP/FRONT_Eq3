@@ -1,14 +1,18 @@
-import { createContext, useProvideAuth } from 'react';
+import { useEffect, useState } from "react";
 
-export const AuthContext = createContext();
-
-    const AuthProvider = ({ children }) => {
-        const auth = useProvideAuth();
-        return (
-            <AuthContext.Provider value={auth}>
-                {children}
-            </AuthContext.Provider>
-        );
+function useLocalState( defaultValue, key ) {
+     const [value, setValue] = useState(()=> {
+        const LocalStorageValue = localStorage.getItem(key);
+        return LocalStorageValue ? JSON.parse(LocalStorageValue) : defaultValue;
     }
+    )
+    useEffect(() => {
+        if (value !== defaultValue) {
+            localStorage.setItem(key, JSON.stringify(value));
+        }
+    }
+    , [value, key]);
+    return [value, setValue];
+}
 
-    export default AuthProvider;
+export default useLocalState;

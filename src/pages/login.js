@@ -1,7 +1,8 @@
 import { useCallback, useState} from 'react';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged  } from "firebase/auth";
 import { Link } from "react-router-dom";
+import { collection, addDoc, setDoc, doc } from 'firebase/firestore';
 import { Navigate, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authcontext";
 import { PrivateRoute } from "../component/privateroute";
@@ -10,8 +11,14 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [pseudo, setPseudo] = useState('');
     const navigate = useNavigate();
     
+    const handlePseudoChange = useCallback((e) => {
+        setPseudo(e.target.value);
+    },
+    [setPseudo]);
+
     const handleEmailChange = useCallback(
     (e) => {
         setEmail(e.target.value);
@@ -34,9 +41,17 @@ export default function Login() {
         .then((userCredential) => {
             // Signed in 
             const user = userCredential.user;
+            
+            try {
+                const docRef = addDoc(collection(db,'user'), {
+                    value : user.uid,
+                });
+                console.log("Document written with ID: ", docRef.id);
+              } catch (e) {
+                console.error("Error adding document: ", e);
+              }
             navigate("/");
             // ...
-            console.log(user);
         })
         .catch((error) => {
             const errorCode = error.code;
